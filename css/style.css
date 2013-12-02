@@ -2,6 +2,7 @@ td {
 	height: 64px;
 	width: 64px;
 	border: solid black 1px;
+	background: yellow;
 }
 
 table {
@@ -10,9 +11,18 @@ table {
 }
 
 table tr:nth-child(odd) td:nth-child(even) {
-	  background: #000;
+	  background: green;
 }
 table tr:nth-child(even) td:nth-child(odd) {
-	  background: #000;
+	  background: green;
 }
 
+img.item {
+	height: 64px;
+	width: 64px;
+	z-index: 100;
+}
+
+.possibleMove {
+	background-image: radial-gradient(center center, circle cover, #ffeda3, #ffc800);  		
+}
