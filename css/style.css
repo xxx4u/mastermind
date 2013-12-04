@@ -21,8 +21,9 @@ img.item {
 	height: 64px;
 	width: 64px;
 	z-index: 100;
+	display: block;
 }
 
 .possibleMove {
-	background-image: radial-gradient(center center, circle cover, #ffeda3, #ffc800);  		
+	background-image: radial-gradient(#fff, rgba(0, 0, 0, 0.0)); 
 }

@@ -32,6 +32,10 @@ $(function() {
 				var itemDescription = getItemDescriptionById(itemID);
 				var item = $("<img class='item' src='img/" + itemDescription + "-icon.png'/>");
 				$(this).append(item);
+				$(this).click(function() {
+					$("td img").removeClass("possibleMove");
+					$(this).find('img').addClass("possibleMove");	
+				});
 			}
 		});
 	});
