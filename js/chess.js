@@ -33,8 +33,23 @@ $(function() {
 				var item = $("<img class='item' src='img/" + itemDescription + "-icon.png'/>");
 				$(this).append(item);
 				$(this).click(function() {
-					$("td img").removeClass("possibleMove");
-					$(this).find('img').addClass("possibleMove");	
+					$("td").children().removeClass("selectedItem");
+					$(this).find('img').addClass("selectedItem");	
+					$("#chess tr").each(function(k, elem) {
+						$(this).find("td").each(function(l, elem) {
+							var moves = getItemMoves(itemID, i, j);
+							if (moveAllowed(moves, k, l)) {
+								$(this).children().addClass("selectedItem");
+							}
+						});
+					});
+				});
+			} else {
+				var item = $("<span></span>");
+				item.addClass("possibleMove");
+				$(this).append(item);
+				$(this).click(function() {
+					$("td").children().removeClass("selectedItem");
 				});
 			}
 		});
@@ -72,15 +87,55 @@ function getItemDescriptionById(itemID) {
 	}
 }
 
-function moveStart(ev) {
-	var item = ev.target;
-	$(item).parent().empty();
-	$.append(item);
+function getItemMoves(item, x, y) {
+	var itemModel = Math.abs(item);
+	switch (itemModel) {
+		case WHITE_ROOK:
+			return getRookMoves(x, y);
+		case WHITE_QUEEN:
+			return getQueenMoves(x, y);
+		case WHITE_KING:
+			return [];	
+		case WHITE_KNIGHT:
+			return [];
+		case WHITE_BISHOP:
+			return [];
+		case NONE:
+			return [];
+	}
+
+	if (item == WHITE_PAWN) {
+	} else if (item == BLACK_PAWN) {
+	}
+	return [];
 }
 
-function moving(ev) {
+function getRookMoves(x, y) {
+	var moves = [];
+	for (var i = 0; i < 8; i++) {
+		if (i != x) {
+			moves.push([i, y]);
+		}
+	}
+
+	for (var j = 0; j < 8; j++) {
+		if (j != y) {
+			moves.push([x, j]);
+		}
+	}
+	return moves;
 }
 
-function moveEnd(ev) {
-	console.log("pawn released");
+function getQueenMoves(x, y) { 
+	var moves = [];
+	return moves;
+}
+
+function moveAllowed(moves, x, y) {
+	for (var i = 0; i < moves.length; i++) {
+		if (moves[i][0] == x && moves[i][1] == y) {
+			return true;
+		}
+	}
+	return false;
 }

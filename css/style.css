@@ -17,13 +17,23 @@ table tr:nth-child(even) td:nth-child(odd) {
 	  background: green;
 }
 
-img.item {
+.item {
 	height: 64px;
 	width: 64px;
 	z-index: 100;
 	display: block;
 }
 
-.possibleMove {
+.selectedItem {
 	background-image: radial-gradient(#fff, rgba(0, 0, 0, 0.0)); 
 }
+
+.possibleMove {
+	margin-left: auto;
+	margin-right: auto;
+	height: 70%;
+	width: 70%;
+	display: block;
+}
+
+
