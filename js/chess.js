@@ -99,7 +99,7 @@ function getItemMoves(item, x, y) {
 		case WHITE_KNIGHT:
 			return [];
 		case WHITE_BISHOP:
-			return [];
+			return getBishopMoves(x, y);
 		case NONE:
 			return [];
 	}
@@ -116,11 +116,28 @@ function getRookMoves(x, y) {
 		if (i != x) {
 			moves.push([i, y]);
 		}
-	}
 
-	for (var j = 0; j < 8; j++) {
-		if (j != y) {
-			moves.push([x, j]);
+		if (i != y) {
+			moves.push([x, i]);
+		}
+	}
+	return moves;
+}
+
+function getBishopMoves(x, y) {
+	var moves = [];
+	for (var i = 1; i < 8; i++) {
+		if (x < 8 && y < 8) {
+			moves.push([x + i, y + i]);
+		}
+		if (x < 8 && y > 0) {
+			moves.push([x + i, y - i]);
+		}
+		if (x > 0 && y < 8) {
+			moves.push([x - i, y + i]);
+		}
+		if (x > 0 && y > 0) {
+			moves.push([x - i, y - i]);
 		}
 	}
 	return moves;
