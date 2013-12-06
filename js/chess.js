@@ -13,13 +13,13 @@ var BLACK_ROOK = -4;
 var BLACK_QUEEN = -5;
 var BLACK_KING = -6;
 
-var initialBoard = [
+var board = [
 	[BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_QUEEN, BLACK_KING, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK],
 	[BLACK_PAWN, BLACK_PAWN,   BLACK_PAWN,   BLACK_PAWN,  BLACK_PAWN, BLACK_PAWN,   BLACK_PAWN,   BLACK_PAWN],
+	[NONE, 		 WHITE_PAWN,   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
 	[NONE, 		 NONE, 		   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
 	[NONE, 		 NONE, 		   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
-	[NONE, 		 NONE, 		   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
-	[NONE, 		 NONE, 		   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
+	[NONE, 		 BLACK_PAWN,   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
 	[WHITE_PAWN, WHITE_PAWN,   WHITE_PAWN,   WHITE_PAWN,  WHITE_PAWN, WHITE_PAWN,   WHITE_PAWN,   WHITE_PAWN],
 	[WHITE_ROOK, WHITE_KNIGHT, WHITE_BISHOP, WHITE_QUEEN, WHITE_KING, WHITE_BISHOP, WHITE_KNIGHT, WHITE_ROOK],
 ];
@@ -27,7 +27,7 @@ var initialBoard = [
 $(function() {
 	$('#chess tr').each(function(i, elem) {
 		$(this).find("td").each(function(j, elem) {
-			var itemID = initialBoard[i][j];
+			var itemID = board[i][j];
 			if (itemID != NONE) {
 				var itemDescription = getItemDescriptionById(itemID);
 				var item = $("<img class='item' src='img/" + itemDescription + "-icon.png'/>");
@@ -102,8 +102,8 @@ function getItemMoves(item, x, y) {
 			return [];
 	}
 
-	if (item == WHITE_PAWN) {
-	} else if (item == BLACK_PAWN) {
+	if (item == WHITE_PAWN || item == BLACK_PAWN) {
+		return getPawnMoves(item == WHITE_PAWN, x, y);
 	}
 	
 	if (item == WHITE_KING) {
@@ -175,6 +175,34 @@ function getKnightMoves(x, y) {
 	}
 	if ((x - 2) >= 0 && (y - 1) >= 0) {
 		moves.push([x - 2, y - 1]);
+	}
+	return moves;
+}
+
+function getPawnMoves(isWhite, x, y) {
+	var moves = [];
+	if (isWhite) {
+		moves.push([x - 1, y]);
+		if (board[x - 1][y - 1] != NONE) {
+			moves.push([x - 1, y - 1]);
+		}
+		if (board[x - 1][y + 1] != NONE) {
+			moves.push([x - 1, y + 1]);
+		}
+		if (x == 6) {
+			moves.push([x - 2, y]);
+		}
+	} else {
+		moves.push([x + 1, y]);	
+		if (board[x + 1][y + 1] != NONE) {
+			moves.push([x + 1, y + 1]);
+		}
+		if (board[x + 1][y - 1] != NONE) {
+			moves.push([x + 1, y - 1]);
+		}
+		if (x == 1) {
+			moves.push([x + 2, y]);
+		}
 	}
 	return moves;
 }
