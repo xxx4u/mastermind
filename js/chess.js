@@ -94,10 +94,8 @@ function getItemMoves(item, x, y) {
 			return getRookMoves(x, y);
 		case WHITE_QUEEN:
 			return getQueenMoves(x, y);
-		case WHITE_KING:
-			return [];	
 		case WHITE_KNIGHT:
-			return [];
+			return getKnightMoves(x, y);
 		case WHITE_BISHOP:
 			return getBishopMoves(x, y);
 		case NONE:
@@ -106,6 +104,10 @@ function getItemMoves(item, x, y) {
 
 	if (item == WHITE_PAWN) {
 	} else if (item == BLACK_PAWN) {
+	}
+	
+	if (item == WHITE_KING) {
+	} else if (item == BLACK_KING) {
 	}
 	return [];
 }
@@ -145,6 +147,35 @@ function getBishopMoves(x, y) {
 
 function getQueenMoves(x, y) { 
 	var moves = getBishopMoves(x, y).concat(getRookMoves(x, y));
+	return moves;
+}
+
+function getKnightMoves(x, y) {
+	var moves = [];
+	if ((x + 2) < 8 && (y + 1) < 8) {
+		moves.push([x + 2, y + 1]);
+	}
+	if ((x + 1) < 8 && (y + 2) < 8) {
+		moves.push([x + 1, y + 2]);
+	}
+	if ((x - 2) >= 0 && (y + 1) < 8) {
+		moves.push([x - 2, y + 1]);
+	}
+	if ((x - 1) >= 0 && (y + 2) < 8) {
+		moves.push([x - 1, y + 2]);
+	}
+	if ((x + 2) < 8 && (y - 1) >= 0) {
+		moves.push([x + 2, y - 1]);
+	}
+	if ((x + 1) < 8 && (y - 2) >= 0) {
+		moves.push([x + 1, y - 2]);
+	}
+	if ((x - 1) >= 0 && (y - 2) >= 0) {
+		moves.push([x - 1, y - 2]);
+	}
+	if ((x - 2) >= 0 && (y - 1) >= 0) {
+		moves.push([x - 2, y - 1]);
+	}
 	return moves;
 }
 
