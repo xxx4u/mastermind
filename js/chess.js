@@ -144,7 +144,7 @@ function getBishopMoves(x, y) {
 }
 
 function getQueenMoves(x, y) { 
-	var moves = [];
+	var moves = getBishopMoves(x, y).concat(getRookMoves(x, y));
 	return moves;
 }
 
