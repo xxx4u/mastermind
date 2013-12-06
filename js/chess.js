@@ -19,7 +19,7 @@ var board = [
 	[NONE, 		 WHITE_PAWN,   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
 	[NONE, 		 NONE, 		   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
 	[NONE, 		 NONE, 		   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
-	[NONE, 		 BLACK_PAWN,   NONE, 		 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
+	[NONE, 		 BLACK_PAWN,   WHITE_PAWN, 	 NONE, 		  NONE,  	  NONE,			NONE,		  NONE		],
 	[WHITE_PAWN, WHITE_PAWN,   WHITE_PAWN,   WHITE_PAWN,  WHITE_PAWN, WHITE_PAWN,   WHITE_PAWN,   WHITE_PAWN],
 	[WHITE_ROOK, WHITE_KNIGHT, WHITE_BISHOP, WHITE_QUEEN, WHITE_KING, WHITE_BISHOP, WHITE_KNIGHT, WHITE_ROOK],
 ];
@@ -183,10 +183,10 @@ function getPawnMoves(isWhite, x, y) {
 	var moves = [];
 	if (isWhite) {
 		moves.push([x - 1, y]);
-		if (board[x - 1][y - 1] != NONE) {
+		if (board[x - 1][y - 1] < NONE) {
 			moves.push([x - 1, y - 1]);
 		}
-		if (board[x - 1][y + 1] != NONE) {
+		if (board[x - 1][y + 1] < NONE) {
 			moves.push([x - 1, y + 1]);
 		}
 		if (x == 6) {
@@ -194,10 +194,10 @@ function getPawnMoves(isWhite, x, y) {
 		}
 	} else {
 		moves.push([x + 1, y]);	
-		if (board[x + 1][y + 1] != NONE) {
+		if (board[x + 1][y + 1] > NONE) {
 			moves.push([x + 1, y + 1]);
 		}
-		if (board[x + 1][y - 1] != NONE) {
+		if (board[x + 1][y - 1] > NONE) {
 			moves.push([x + 1, y - 1]);
 		}
 		if (x == 1) {
