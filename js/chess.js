@@ -106,8 +106,8 @@ function getItemMoves(item, x, y) {
 		return getPawnMoves(item == WHITE_PAWN, x, y);
 	}
 	
-	if (item == WHITE_KING) {
-	} else if (item == BLACK_KING) {
+	if (item == WHITE_KING || item == BLACK_KING) {
+		return getKingMoves(item == WHITE_KING, x, y);
 	}
 	return [];
 }
@@ -183,10 +183,10 @@ function getPawnMoves(isWhite, x, y) {
 	var moves = [];
 	if (isWhite) {
 		moves.push([x - 1, y]);
-		if (board[x - 1][y - 1] < NONE) {
+		if ((x - 1) >= 0 && (y - 1) >= 0 && board[x - 1][y - 1] < NONE) {
 			moves.push([x - 1, y - 1]);
 		}
-		if (board[x - 1][y + 1] < NONE) {
+		if ((x - 1) >= 0 && (y + 1) < 8 && board[x - 1][y + 1] < NONE) {
 			moves.push([x - 1, y + 1]);
 		}
 		if (x == 6) {
@@ -194,10 +194,10 @@ function getPawnMoves(isWhite, x, y) {
 		}
 	} else {
 		moves.push([x + 1, y]);	
-		if (board[x + 1][y + 1] > NONE) {
+		if ((x + 1) < 8 && (y + 1) < 8 && board[x + 1][y + 1] > NONE) {
 			moves.push([x + 1, y + 1]);
 		}
-		if (board[x + 1][y - 1] > NONE) {
+		if ((x + 1) < 8 && (y - 1) >= 0 && board[x + 1][y - 1] > NONE) {
 			moves.push([x + 1, y - 1]);
 		}
 		if (x == 1) {
@@ -205,6 +205,61 @@ function getPawnMoves(isWhite, x, y) {
 		}
 	}
 	return moves;
+}
+
+function getKingMoves(isWhite, x, y) {
+	var moves = [];
+	if ((x + 1) < 8) {
+		moves.push([x + 1, y]);
+	}
+	if ((x - 1) >= 0) {
+		moves.push([x - 1, y]);
+	}
+	if ((y + 1) < 8) {
+		moves.push([x, y + 1]);
+	}
+	if ((y - 1) >= 0) {
+		moves.push([x, y - 1]);
+	}
+	if ((x + 1) < 8 && (y + 1) < 8) {
+		moves.push([x + 1, y + 1]);
+	}
+	if ((x - 1) >= 0 && (y - 1) >= 0) {
+		moves.push([x - 1, y - 1]);
+	}
+	if ((x + 1) < 8 && (y - 1) >= 0) {
+		moves.push([x + 1, y - 1]);
+	}
+	if ((x - 1) >= 0 && (y + 1) < 8) {
+		moves.push([x - 1, y + 1]);
+	}
+	
+	var enemies = [];
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			var item = board[i][j];
+			if (isWhite && item < NONE && Math.abs(item) != WHITE_KING) {
+				moves = removeMoves(moves, getItemMoves(item, i, j));
+			}
+			if (!isWhite && item > NONE && Math.abs(item) != WHITE_KING) {
+				moves = removeMoves(moves, getItemMoves(item, i, j));
+			}
+		}
+	}
+
+	return moves;
+}
+
+function removeMoves(moves, itemMoves) {
+	var newMoves = moves;
+	for (var i = 0; i < newMoves.length; i++) {
+		for (var j = 0; j < itemMoves.length; j++) {
+			if (newMoves[i][0] == itemMoves[j][0] && newMoves[i][1] == itemMoves[j][1]) {
+				newMoves.splice(i--, 1);		   
+			}
+		}
+	}
+	return newMoves;
 }
 
 function moveAllowed(moves, x, y) {
