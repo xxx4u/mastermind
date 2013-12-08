@@ -98,22 +98,18 @@ function getItemMoves(item, x, y) {
 			return getKnightMoves(x, y);
 		case WHITE_BISHOP:
 			return getBishopMoves(x, y);
+		case WHITE_KING:
+			return getKingMoves(x, y);
+		case WHITE_PAWN:
+			return getPawnMoves(x, y);
 		case NONE:
 			return [];
 	}
-
-	if (item == WHITE_PAWN || item == BLACK_PAWN) {
-		return getPawnMoves(item == WHITE_PAWN, x, y);
-	}
-	
-	if (item == WHITE_KING || item == BLACK_KING) {
-		return getKingMoves(item == WHITE_KING, x, y);
-	}
-	return [];
 }
 
 function getRookMoves(x, y) {
 	var moves = [];
+	var isWhite = board[x][y] > NONE;
 	for (var i = 0; i < 8; i++) {
 		if (i != x) {
 			moves.push([i, y]);
@@ -128,6 +124,7 @@ function getRookMoves(x, y) {
 
 function getBishopMoves(x, y) {
 	var moves = [];
+	var isWhite = board[x][y] > NONE;
 	for (var i = 1; i < 8; i++) {
 		if (x < 8 && y < 8) {
 			moves.push([x + i, y + i]);
@@ -179,8 +176,9 @@ function getKnightMoves(x, y) {
 	return moves;
 }
 
-function getPawnMoves(isWhite, x, y) {
+function getPawnMoves(x, y) {
 	var moves = [];
+	var isWhite = board[x][y] > NONE;
 	if (isWhite) {
 		moves.push([x - 1, y]);
 		if ((x - 1) >= 0 && (y - 1) >= 0 && board[x - 1][y - 1] < NONE) {
@@ -207,8 +205,9 @@ function getPawnMoves(isWhite, x, y) {
 	return moves;
 }
 
-function getKingMoves(isWhite, x, y) {
+function getKingMoves(x, y) {
 	var moves = [];
+	var isWhite = board[x][y] > NONE;
 	if ((x + 1) < 8) {
 		moves.push([x + 1, y]);
 	}
