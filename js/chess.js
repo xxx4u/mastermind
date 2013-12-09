@@ -32,7 +32,7 @@ $(function() {
 				var itemDescription = getItemDescriptionById(itemID);
 				var item = $("<img class='item' src='img/" + itemDescription + "-icon.png'/>");
 				$(this).append(item);
-				$(this).click(function() {
+				$(this).click(fuction() {
 					$("td").children().removeClass("selectedItem");
 					$(this).find('img').addClass("selectedItem");	
 					$("#chess tr").each(function(k, elem) {
@@ -126,19 +126,12 @@ function getBishopMoves(x, y) {
 	var moves = [];
 	var isWhite = board[x][y] == WHITE_BISHOP;
 	for (var i = 1; i < 8; i++) {
-		if (x < 8 && y < 8) {
-			moves.push([x + i, y + i]);
-		}
-		if (x < 8 && y > 0) {
-			moves.push([x + i, y - i]);
-		}
-		if (x > 0 && y < 8) {
-			moves.push([x - i, y + i]);
-		}
-		if (x > 0 && y > 0) {
-			moves.push([x - i, y - i]);
-		}
+		moves.push([x + i, y + i]);
+		moves.push([x + i, y - i]);
+		moves.push([x - i, y + i]);
+		moves.push([x - i, y - i]);
 	}
+	moves = cropOutsiders(moves);
 	return moves;
 }
 
@@ -148,31 +141,9 @@ function getQueenMoves(x, y) {
 }
 
 function getKnightMoves(x, y) {
-	var moves = [];
-	if ((x + 2) < 8 && (y + 1) < 8) {
-		moves.push([x + 2, y + 1]);
-	}
-	if ((x + 1) < 8 && (y + 2) < 8) {
-		moves.push([x + 1, y + 2]);
-	}
-	if ((x - 2) >= 0 && (y + 1) < 8) {
-		moves.push([x - 2, y + 1]);
-	}
-	if ((x - 1) >= 0 && (y + 2) < 8) {
-		moves.push([x - 1, y + 2]);
-	}
-	if ((x + 2) < 8 && (y - 1) >= 0) {
-		moves.push([x + 2, y - 1]);
-	}
-	if ((x + 1) < 8 && (y - 2) >= 0) {
-		moves.push([x + 1, y - 2]);
-	}
-	if ((x - 1) >= 0 && (y - 2) >= 0) {
-		moves.push([x - 1, y - 2]);
-	}
-	if ((x - 2) >= 0 && (y - 1) >= 0) {
-		moves.push([x - 2, y - 1]);
-	}
+	var moves = [[x + 2, y + 1], [x + 1, y + 2], [x - 2, y + 1], [x - 1, y + 2],
+		 		 [x + 2, y - 1], [x + 1, y - 2], [x - 1, y - 2], [x - 2, y - 1]];
+	moves = cropOutsiders(moves);
 	return moves;
 }
 
@@ -181,10 +152,10 @@ function getPawnMoves(x, y) {
 	var isWhite = board[x][y] == WHITE_PAWN;
 	if (isWhite) {
 		moves.push([x - 1, y]);
-		if ((x - 1) >= 0 && (y - 1) >= 0 && board[x - 1][y - 1] < NONE) {
+		if (board[x - 1][y - 1] < NONE) {
 			moves.push([x - 1, y - 1]);
 		}
-		if ((x - 1) >= 0 && (y + 1) < 8 && board[x - 1][y + 1] < NONE) {
+		if (board[x - 1][y + 1] < NONE) {
 			moves.push([x - 1, y + 1]);
 		}
 		if (x == 6) {
@@ -192,48 +163,27 @@ function getPawnMoves(x, y) {
 		}
 	} else {
 		moves.push([x + 1, y]);	
-		if ((x + 1) < 8 && (y + 1) < 8 && board[x + 1][y + 1] > NONE) {
+		if (board[x + 1][y + 1] > NONE) {
 			moves.push([x + 1, y + 1]);
 		}
-		if ((x + 1) < 8 && (y - 1) >= 0 && board[x + 1][y - 1] > NONE) {
+		if (board[x + 1][y - 1] > NONE) {
 			moves.push([x + 1, y - 1]);
 		}
 		if (x == 1) {
 			moves.push([x + 2, y]);
 		}
 	}
+	moves = cropOutsiders(moves);
 	return moves;
 }
 
 function getKingMoves(x, y) {
-	var moves = [];
+	var moves = [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1],
+				 [x + 1, y + 1], [x - 1, y - 1], [x + 1, y - 1], [x - 1, y + 1]];
+
+	moves = cropOutsiders(moves);
 	var isWhite = board[x][y] == WHITE_KING;
 
-	if ((x + 1) < 8) {
-		moves.push([x + 1, y]);
-	}
-	if ((x - 1) >= 0) {
-		moves.push([x - 1, y]);
-	}
-	if ((y + 1) < 8) {
-		moves.push([x, y + 1]);
-	}
-	if ((y - 1) >= 0) {
-		moves.push([x, y - 1]);
-	}
-	if ((x + 1) < 8 && (y + 1) < 8) {
-		moves.push([x + 1, y + 1]);
-	}
-	if ((x - 1) >= 0 && (y - 1) >= 0) {
-		moves.push([x - 1, y - 1]);
-	}
-	if ((x + 1) < 8 && (y - 1) >= 0) {
-		moves.push([x + 1, y - 1]);
-	}
-	if ((x - 1) >= 0 && (y + 1) < 8) {
-		moves.push([x - 1, y + 1]);
-	}
-	
 	var enemies = [];
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
@@ -260,6 +210,20 @@ function getKingMoves(x, y) {
 function getKingMoves_(x, y) {
 	return [[x + 1, y + 1], [x - 1, y + 1], [x + 1, y - 1], [x - 1, y - 1], 
 			[x - 1, y], [x + 1, y],	[x, y - 1], [x, y + 1]];
+}
+
+function cropOutsiders(moves) {
+	var correctMoves = [];
+	for (var i = 0; i < moves.length; i++) {
+		var correctMove = [];
+		for (var j = 0; j < moves[i].length; j++) {
+			if (moves[i][j] >= 0 || moves[i][j] < 8) {
+				correctMove.push(moves[i][j]);	
+			}
+		}
+		correctMoves.push(correctMove);	
+	}
+	return correctMoves;
 }
 
 function removeMoves(moves, itemMoves) {
