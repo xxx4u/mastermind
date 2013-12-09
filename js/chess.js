@@ -109,7 +109,7 @@ function getItemMoves(item, x, y) {
 
 function getRookMoves(x, y) {
 	var moves = [];
-	var isWhite = board[x][y] > NONE;
+	var isWhite = board[x][y] == WHITE_ROOK;
 	for (var i = 0; i < 8; i++) {
 		if (i != x) {
 			moves.push([i, y]);
@@ -124,7 +124,7 @@ function getRookMoves(x, y) {
 
 function getBishopMoves(x, y) {
 	var moves = [];
-	var isWhite = board[x][y] > NONE;
+	var isWhite = board[x][y] == WHITE_BISHOP;
 	for (var i = 1; i < 8; i++) {
 		if (x < 8 && y < 8) {
 			moves.push([x + i, y + i]);
@@ -178,7 +178,7 @@ function getKnightMoves(x, y) {
 
 function getPawnMoves(x, y) {
 	var moves = [];
-	var isWhite = board[x][y] > NONE;
+	var isWhite = board[x][y] == WHITE_PAWN;
 	if (isWhite) {
 		moves.push([x - 1, y]);
 		if ((x - 1) >= 0 && (y - 1) >= 0 && board[x - 1][y - 1] < NONE) {
