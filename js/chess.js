@@ -207,7 +207,8 @@ function getPawnMoves(x, y) {
 
 function getKingMoves(x, y) {
 	var moves = [];
-	var isWhite = board[x][y] > NONE;
+	var isWhite = board[x][y] == WHITE_KING;
+
 	if ((x + 1) < 8) {
 		moves.push([x + 1, y]);
 	}
@@ -236,17 +237,29 @@ function getKingMoves(x, y) {
 	var enemies = [];
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
+			if (i == x || j == y) {
+				continue;
+			}
 			var item = board[i][j];
-			if (isWhite && item < NONE && Math.abs(item) != WHITE_KING) {
+			if ((isWhite && item == BLACK_KING) || (!isWhite && item == WHITE_KING)) {
+				moves = removeMoves(moves, getKingMoves_(i, j));	
+				continue;
+			}
+			if (isWhite && item < NONE) {
 				moves = removeMoves(moves, getItemMoves(item, i, j));
 			}
-			if (!isWhite && item > NONE && Math.abs(item) != WHITE_KING) {
+			if (!isWhite && item > NONE) {
 				moves = removeMoves(moves, getItemMoves(item, i, j));
 			}
 		}
 	}
 
 	return moves;
+}
+
+function getKingMoves_(x, y) {
+	return [[x + 1, y + 1], [x - 1, y + 1], [x + 1, y - 1], [x - 1, y - 1], 
+			[x - 1, y], [x + 1, y],	[x, y - 1], [x, y + 1]];
 }
 
 function removeMoves(moves, itemMoves) {
