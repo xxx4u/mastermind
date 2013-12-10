@@ -1,4 +1,5 @@
 var NONE = 0;
+
 var WHITE_PAWN = 1;
 var WHITE_BISHOP = 2;
 var WHITE_KNIGHT = 3;
@@ -32,7 +33,7 @@ $(function() {
 				var itemDescription = getItemDescriptionById(itemID);
 				var item = $("<img class='item' src='img/" + itemDescription + "-icon.png'/>");
 				$(this).append(item);
-				$(this).click(fuction() {
+				$(this).click(function() {
 					$("td").children().removeClass("selectedItem");
 					$(this).find('img').addClass("selectedItem");	
 					$("#chess tr").each(function(k, elem) {
