@@ -145,6 +145,7 @@ function getKnightMoves(x, y) {
 	var moves = [[x + 2, y + 1], [x + 1, y + 2], [x - 2, y + 1], [x - 1, y + 2],
 		 		 [x + 2, y - 1], [x + 1, y - 2], [x - 1, y - 2], [x - 2, y - 1]];
 	moves = cropOutsiders(moves);
+	moves = cropEngagedMoves(moves);
 	return moves;
 }
 
@@ -216,13 +217,21 @@ function getKingMoves_(x, y) {
 function cropOutsiders(moves) {
 	var correctMoves = [];
 	for (var i = 0; i < moves.length; i++) {
-		var correctMove = [];
-		for (var j = 0; j < moves[i].length; j++) {
-			if (moves[i][j] >= 0 || moves[i][j] < 8) {
-				correctMove.push(moves[i][j]);	
-			}
+		var move = moves[i];
+		if (move[0] >= 0 && move[0] < 8 && move[1] >= 0 && move[1] < 8) {
+			correctMoves.push(move);	
 		}
-		correctMoves.push(correctMove);	
+	}
+	return correctMoves;
+}
+
+function cropEngagedMoves(moves) {
+	var correctMoves = [];
+	for (var i = 0; i < moves.length; i++) {
+		var move = moves[i];
+		if (board[move[0]][move[1]] == NONE) {
+			correctMoves.push(move);
+		}
 	}
 	return correctMoves;
 }
