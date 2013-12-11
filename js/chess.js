@@ -126,11 +126,32 @@ function getRookMoves(x, y) {
 function getBishopMoves(x, y) {
 	var moves = [];
 	var isWhite = board[x][y] == WHITE_BISHOP;
-	for (var i = 1; i < 8; i++) {
-		moves.push([x + i, y + i]);
-		moves.push([x + i, y - i]);
-		moves.push([x - i, y + i]);
-		moves.push([x - i, y - i]);
+	for (var i = x + 1, j = y + 1; i < 8 && j < 8; i++, j++) {
+		moves.push([i, j]);
+		if (board[i][j] != NONE) {
+			break;
+		}
+	}
+
+	for (var i = x + 1, j = y - 1; i < 8 && j >= 0; i++, j--) {
+		moves.push([i, j]);
+		if (board[i][j] != NONE) {
+			break;
+		}
+	}
+	
+	for (var i = x - 1, j = y + 1; i >= 0 && j < 8; i--, j++) {
+		moves.push([i, j]);
+		if (board[i][j] != NONE) {
+			break;
+		}
+	}
+
+	for (var i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
+		moves.push([i, j]);
+		if (board[i][j] != NONE) {
+			break;
+		}
 	}
 	moves = cropOutsiders(moves);
 	return moves;
