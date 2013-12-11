@@ -111,15 +111,31 @@ function getItemMoves(item, x, y) {
 function getRookMoves(x, y) {
 	var moves = [];
 	var isWhite = board[x][y] == WHITE_ROOK;
-	for (var i = 0; i < 8; i++) {
-		if (i != x) {
-			moves.push([i, y]);
-		}
-
-		if (i != y) {
-			moves.push([x, i]);
+	for (var i = x + 1; i < 8; i++) {
+		moves.push([i, y]);
+		if (board[i][y] != NONE) {
+			break;
 		}
 	}
+	for (var i = y + 1; i < 8; i++) {
+		moves.push([x, i]);
+		if (board[x][i] != NONE) {
+			break;
+		}
+	}
+	for (var i = x - 1; i >= 0; i--) {
+		moves.push([i, y]);
+		if (board[i][y] != NONE) {
+			break;
+		}
+	}
+	for (var i = y - 1; i >= 0; i--) {
+		moves.push([x, i]);
+		if (board[x][i] != NONE) {
+			break;
+		}
+	}
+	
 	return moves;
 }
 
